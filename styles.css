@@ -447,6 +447,28 @@ body {
   color: #8a7858;
 }
 
+.footer-link {
+  color: #8a7858;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+.footer-link--icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
 /* ============================================================
    Responsive
    ============================================================ */
