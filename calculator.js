@@ -59,6 +59,7 @@ function calculate() {
 document.querySelectorAll('.preset-btn').forEach(btn => {
   btn.addEventListener('click', function () {
     document.getElementById('channels').value   = this.dataset.channels;
+    document.getElementById('streams').value    = '1';
     document.getElementById('sampleRate').value = '48000';
     document.getElementById('bitDepth').value   = '24';
     document.getElementById('packetTime').value = '0.001';
