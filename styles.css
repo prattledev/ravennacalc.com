@@ -99,8 +99,10 @@ body {
   font-size: 15px;
   color: var(--text-muted);
   line-height: 1.7;
-  max-width: 780px;
+
   margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
 }
 
 /* ============================================================
