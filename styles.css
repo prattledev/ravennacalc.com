@@ -1,0 +1,433 @@
+/* ============================================================
+   ravennacalc.com — Bandwidth Calculator Styles
+   ============================================================ */
+
+/* ----- CSS Variables ----- */
+:root {
+  --bg:           #f0ece0;   /* warm parchment */
+  --surface:      #ffffff;
+  --border:       #d8d2c2;
+  --border-inner: #ebe6d8;
+  --header-bg:    #2c1a08;   /* dark chocolate brown — logo text colour */
+  --footer-bg:    #2c1a08;
+
+  --primary:      #7a8c20;   /* olive green — logo arc colour */
+  --primary-hover:#5e6c18;
+  --primary-light:#edf0d6;   /* pale olive tint */
+
+  --text:         #261608;   /* very dark warm brown */
+  --text-muted:   #6b5838;
+  --text-faint:   #9a8a6a;
+
+  --shadow:       0 1px 3px rgba(44,26,8,0.07), 0 6px 24px rgba(44,26,8,0.08);
+  --radius:       12px;
+  --radius-sm:    8px;
+  --radius-xs:    6px;
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ----- Reset ----- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ----- Layout Container ----- */
+.container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.site-header {
+  background: var(--header-bg);
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.brand-logo {
+  height: 52px;
+  width: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+.brand-tagline {
+  font-size: 14px;
+  color: #f0ece0;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   Main
+   ============================================================ */
+.main-content {
+  flex: 1;
+  padding: 36px 0 52px;
+}
+
+/* ============================================================
+   Quick Presets
+   ============================================================ */
+.presets-section {
+  margin-bottom: 28px;
+}
+
+.presets-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.presets-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.presets-subtitle {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preset-btn {
+  padding: 7px 20px;
+  border-radius: var(--radius-xs);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s, background 0.14s, box-shadow 0.14s;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+.preset-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.preset-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(122,140,32,0.35);
+}
+
+/* ============================================================
+   Calculator Layout
+   ============================================================ */
+.calculator-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ============================================================
+   Card
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 26px 28px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-inner);
+}
+
+.card-title svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Config Card — Form Elements
+   ============================================================ */
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14.5px;
+  color: var(--text);
+  background: #faf8f3;
+  outline: none;
+  transition: border-color 0.14s, box-shadow 0.14s, background 0.14s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(122,140,32,0.12);
+}
+
+/* Custom select arrow */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* Config note */
+.config-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 6px;
+  padding: 9px 12px;
+  background: #f5f0e4;
+  border: 1px solid var(--border-inner);
+  border-radius: var(--radius-xs);
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-family: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+  line-height: 1.4;
+}
+
+.config-note svg {
+  flex-shrink: 0;
+  color: var(--text-faint);
+}
+
+/* ============================================================
+   Results Card
+   ============================================================ */
+
+/* Primary result blocks: Per Stream / Total */
+.result-primary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.result-block {
+  padding: 18px 20px;
+}
+
+.result-block:first-child {
+  border-right: 1px solid var(--border);
+}
+
+.result-block--highlight {
+  background: var(--primary-light);
+}
+
+.result-block-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+
+.result-block--highlight .result-block-label {
+  color: #8a9e30;
+}
+
+.result-block-value {
+  font-size: 27px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+.result-value-total {
+  color: var(--primary);
+}
+
+.bw-val {
+  font-variant-numeric: tabular-nums;
+}
+
+.bw-unit {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+.result-block-sub {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 5px;
+  min-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stats 2×2 grid */
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.result-stat {
+  padding: 13px 16px;
+  background: var(--surface);
+}
+
+.result-stat:nth-child(1),
+.result-stat:nth-child(2) {
+  border-bottom: 1px solid var(--border-inner);
+}
+
+.result-stat:nth-child(1),
+.result-stat:nth-child(3) {
+  border-right: 1px solid var(--border-inner);
+}
+
+.result-stat-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+  margin-bottom: 5px;
+}
+
+.result-stat-value {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  background: var(--footer-bg);
+  padding: 16px 0;
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.site-footer p {
+  font-size: 12px;
+  color: #c8b898;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: #8a7858;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 800px) {
+  .calculator-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .main-content {
+    padding: 24px 0 40px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .preset-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .result-primary {
+    grid-template-columns: 1fr;
+  }
+
+  .result-block:first-child {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-block-value {
+    font-size: 24px;
+  }
+}

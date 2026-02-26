@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Professional SMPTE ST 2110-30 / AES67 / RAVENNA audio-over-IP bandwidth calculator.">
+  <title>ravennacalc.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolyline points='0,12 3,12 5,4 7,20 9,7 11,17 13,10 15,14 17,5 19,19 21,12 24,12' stroke='%237a8c20' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <a href="https://www.ravenna-network.com" target="_blank" rel="noopener noreferrer">
+          <img class="brand-logo" src="img/rav_logo.png" alt="RAVENNA — AES67 &amp; ST 2110 built-in">
+        </a>
+        <div class="brand-tagline">Bandwidth Calculator</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Quick Presets -->
+      <section class="presets-section">
+        <div class="presets-header">
+          <span class="presets-title">Quick Presets</span>
+          <span class="presets-subtitle">ST&nbsp;2110-30 · 48&nbsp;kHz · 24-bit · 1&nbsp;ms</span>
+        </div>
+        <div class="preset-buttons">
+          <button class="preset-btn active" data-channels="2">ST2110 2ch</button>
+          <button class="preset-btn" data-channels="4">ST2110 4ch</button>
+          <button class="preset-btn" data-channels="8">ST2110 8ch</button>
+          <button class="preset-btn" data-channels="16">ST2110 16ch</button>
+          <button class="preset-btn" data-channels="64">ST2110 64ch</button>
+        </div>
+      </section>
+
+      <!-- Calculator -->
+      <div class="calculator-layout">
+
+        <!-- Configuration -->
+        <section class="card config-card">
+          <h2 class="card-title">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="18" y2="18"/>
+              <circle cx="17" cy="6" r="3"/><circle cx="17" cy="12" r="3"/><circle cx="10" cy="18" r="3"/>
+            </svg>
+            Configuration
+          </h2>
+
+          <div class="form-field">
+            <label class="form-label" for="channels">Channels</label>
+            <input class="form-input" type="number" id="channels" value="2" min="1" max="512" step="1">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="streams">Number of Streams</label>
+            <input class="form-input" type="number" id="streams" value="1" min="1" max="100000" step="1">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="sampleRate">Sample Rate</label>
+            <select class="form-select" id="sampleRate">
+              <option value="44100">44.1 kHz</option>
+              <option value="48000" selected>48 kHz</option>
+              <option value="88200">88.2 kHz</option>
+              <option value="96000">96 kHz</option>
+              <option value="192000">192 kHz</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="bitDepth">Bit Depth</label>
+            <select class="form-select" id="bitDepth">
+              <option value="16">16-bit (L16)</option>
+              <option value="24" selected>24-bit (L24)</option>
+              <option value="32">32-bit (L32)</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="packetTime">Packet Time</label>
+            <select class="form-select" id="packetTime">
+              <option value="0.000125">125 µs</option>
+              <option value="0.000250">250 µs</option>
+              <option value="0.000333333">333 µs (⅓ ms)</option>
+              <option value="0.001" selected>1 ms</option>
+              <option value="0.004">4 ms</option>
+            </select>
+          </div>
+
+          <div class="config-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Header overhead: 14B Eth + 20B IP + 8B UDP + 12B RTP = 54B
+          </div>
+        </section>
+
+        <!-- Results -->
+        <section class="card results-card">
+          <h2 class="card-title">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            Bandwidth Results
+          </h2>
+
+          <div class="result-primary">
+            <div class="result-block">
+              <div class="result-block-label">Per Stream</div>
+              <div class="result-block-value" id="perStreamBw">—</div>
+              <div class="result-block-sub" id="perStreamBwAlt"></div>
+            </div>
+            <div class="result-block result-block--highlight">
+              <div class="result-block-label" id="totalLabel">Total</div>
+              <div class="result-block-value result-value-total" id="totalBw">—</div>
+              <div class="result-block-sub" id="totalBwAlt"></div>
+            </div>
+          </div>
+
+          <div class="result-grid">
+            <div class="result-stat">
+              <div class="result-stat-label">Packet Rate</div>
+              <div class="result-stat-value" id="packetRate">—</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-label">Samples / Packet</div>
+              <div class="result-stat-value" id="samplesPerPkt">—</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-label">Audio Payload</div>
+              <div class="result-stat-value" id="payloadSize">—</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-label">Total Packet Size</div>
+              <div class="result-stat-value" id="packetSize">—</div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.calculator-layout -->
+    </div><!-- /.container -->
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-copy">&copy; <script>document.write(new Date().getFullYear())</script> ravennacalc.com. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const HEADER_BYTES = 54; // Ethernet(14) + IPv4(20) + UDP(8) + RTP(12)
+
+    function formatBw(bps) {
+      if (bps >= 1e9) return { val: (bps / 1e9).toFixed(3), unit: 'Gbps' };
+      if (bps >= 1e6) return { val: (bps / 1e6).toFixed(3), unit: 'Mbps' };
+      if (bps >= 1e3) return { val: (bps / 1e3).toFixed(2), unit: 'Kbps' };
+      return { val: bps.toFixed(0), unit: 'bps' };
+    }
+
+    function altBw(bps) {
+      if (bps >= 1e9) return (bps / 1e6).toFixed(1) + ' Mbps';
+      if (bps >= 1e6) return (bps / 1e3).toFixed(0) + ' Kbps';
+      return '';
+    }
+
+    function fmtBytes(n) {
+      if (n >= 1048576) return (n / 1048576).toFixed(2) + ' MB';
+      if (n >= 1024) return (n / 1024).toFixed(2) + ' KB';
+      return n.toLocaleString('en-US') + ' B';
+    }
+
+    function bwHTML(bps) {
+      const f = formatBw(bps);
+      return `<span class="bw-val">${f.val}</span><span class="bw-unit">&nbsp;${f.unit}</span>`;
+    }
+
+    function calculate() {
+      const channels   = Math.max(1, parseInt(document.getElementById('channels').value) || 1);
+      const sampleRate = parseInt(document.getElementById('sampleRate').value);
+      const bitDepth   = parseInt(document.getElementById('bitDepth').value);
+      const packetTime = parseFloat(document.getElementById('packetTime').value);
+      const streams    = Math.max(1, parseInt(document.getElementById('streams').value) || 1);
+
+      const samplesPerPkt = Math.round(sampleRate * packetTime);
+      const payloadBytes  = channels * samplesPerPkt * (bitDepth / 8);
+      const pktBytes      = payloadBytes + HEADER_BYTES;
+      const pktRate       = 1 / packetTime;
+      const bps           = pktBytes * 8 * pktRate;
+      const totalBps      = bps * streams;
+
+      document.getElementById('perStreamBw').innerHTML = bwHTML(bps);
+      document.getElementById('perStreamBwAlt').textContent = altBw(bps);
+
+      document.getElementById('totalBw').innerHTML = bwHTML(totalBps);
+      document.getElementById('totalBwAlt').textContent = altBw(totalBps);
+
+      document.getElementById('totalLabel').textContent =
+        streams === 1 ? 'Total (1 stream)' : `Total (${streams.toLocaleString('en-US')} streams)`;
+
+      document.getElementById('packetRate').textContent =
+        pktRate.toLocaleString('en-US') + ' pkt/s';
+      document.getElementById('samplesPerPkt').textContent =
+        samplesPerPkt.toLocaleString('en-US') + ' per ch';
+      document.getElementById('payloadSize').textContent = fmtBytes(payloadBytes);
+      document.getElementById('packetSize').textContent  = fmtBytes(pktBytes);
+    }
+
+    // Preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        document.getElementById('channels').value   = this.dataset.channels;
+        document.getElementById('sampleRate').value = '48000';
+        document.getElementById('bitDepth').value   = '24';
+        document.getElementById('packetTime').value = '0.001';
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        calculate();
+      });
+    });
+
+    // Deactivate presets on manual change
+    ['channels', 'sampleRate', 'bitDepth', 'packetTime'].forEach(id => {
+      ['input', 'change'].forEach(evt => {
+        document.getElementById(id).addEventListener(evt, () => {
+          document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+          calculate();
+        });
+      });
+    });
+
+    document.getElementById('streams').addEventListener('input', calculate);
+    document.getElementById('streams').addEventListener('change', calculate);
+
+    calculate();
+  </script>
+
+</body>
+</html>
