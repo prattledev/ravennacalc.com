@@ -96,13 +96,11 @@ body {
    Intro
    ============================================================ */
 .intro {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.7;
-
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.8;
   margin-bottom: 28px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--border);
 }
 
 /* ============================================================
@@ -397,6 +395,34 @@ body {
   font-weight: 600;
   color: var(--text);
   font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Multicast Note
+   ============================================================ */
+.multicast-note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--primary-light);
+  border: 1px solid #c8d47a;
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.multicast-note svg {
+  flex-shrink: 0;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.multicast-note strong {
+  color: var(--text);
 }
 
 /* ============================================================

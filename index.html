@@ -30,7 +30,7 @@
     <div class="container">
 
       <!-- Quick Presets -->
-      <p class="intro">Ravenna bandwidth calculator is an easy-to-use online tool designed to help audio and network engineers quickly and accurately calculate how much network bandwidth is required and use this information to design appropriate systems. Please note that the results are based on point-to-point/unicast links. Multicast is the default method of transporting Ravenna streams in a high-performance media network.</p>
+      <p class="intro">Ravenna bandwidth calculator is an easy-to-use online tool designed to help audio and network engineers quickly and accurately calculate how much network bandwidth is required and use this information to design appropriate systems.</p>
 
       <section class="presets-section">
         <div class="presets-header">
@@ -153,6 +153,16 @@
         </section>
 
       </div><!-- /.calculator-layout -->
+
+      <div class="multicast-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <div>
+          <strong>Multicast bandwidth savings:</strong> The results above reflect unicast (point-to-point) bandwidth, where a separate stream is sent to each receiver. With multicast — the default transport method for RAVENNA in professional media networks — a single stream is transmitted once on the network regardless of how many receivers are listening. This means network bandwidth consumption does not increase with the number of receivers, making multicast significantly more efficient for large-scale or broadcast deployments.
+        </div>
+      </div>
+
     </div><!-- /.container -->
   </main>
 
