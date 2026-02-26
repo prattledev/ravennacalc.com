@@ -55,6 +55,29 @@ function calculate() {
   document.getElementById('packetSize').textContent  = fmtBytes(pktBytes);
 }
 
+// Sanitise positive-integer fields
+function sanitisePositiveInt(el) {
+  const raw = el.value;
+  const n   = Math.floor(parseFloat(raw));
+  if (!isFinite(n) || n < 1) {
+    el.value = 1;
+  } else if (String(n) !== raw.trim()) {
+    el.value = n;
+  }
+}
+
+['channels', 'streams'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('blur', () => {
+    sanitisePositiveInt(el);
+    calculate();
+  });
+  el.addEventListener('keydown', e => {
+    // Block decimal point, minus, and 'e' (scientific notation)
+    if (['.', '-', 'e', 'E', '+'].includes(e.key)) e.preventDefault();
+  });
+});
+
 // Preset buttons
 document.querySelectorAll('.preset-btn').forEach(btn => {
   btn.addEventListener('click', function () {
