@@ -270,8 +270,8 @@ body {
 /* Config note */
 .config-note {
   display: flex;
-  align-items: center;
-  gap: 7px;
+  align-items: flex-start;
+  gap: 12px;
   margin-top: 6px;
   padding: 9px 12px;
   background: #f5f0e4;
@@ -286,6 +286,7 @@ body {
 .config-note svg {
   flex-shrink: 0;
   color: var(--text-faint);
+  margin-top: 1px;
 }
 
 /* ============================================================
