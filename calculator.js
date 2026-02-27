@@ -25,11 +25,11 @@ function bwHTML(bps) {
 }
 
 function calculate() {
-  const channels   = Math.max(1, parseInt(document.getElementById('channels').value) || 1);
+  const channels   = Math.min(128,  Math.max(1, parseInt(document.getElementById('channels').value) || 1));
   const sampleRate = parseInt(document.getElementById('sampleRate').value);
   const bitDepth   = parseInt(document.getElementById('bitDepth').value);
   const packetTime = parseFloat(document.getElementById('packetTime').value);
-  const streams    = Math.max(1, parseInt(document.getElementById('streams').value) || 1);
+  const streams    = Math.min(1000, Math.max(1, parseInt(document.getElementById('streams').value) || 1));
 
   const samplesPerPkt = Math.round(sampleRate * packetTime);
   const payloadBytes  = channels * samplesPerPkt * (bitDepth / 8);
@@ -58,7 +58,8 @@ function calculate() {
 // Sanitise positive-integer fields
 function sanitisePositiveInt(el) {
   const raw = el.value;
-  const n   = Math.floor(parseFloat(raw));
+  const max = parseInt(el.max) || Infinity;
+  const n   = Math.min(max, Math.floor(parseFloat(raw)));
   if (!isFinite(n) || n < 1) {
     el.value = 1;
   } else if (String(n) !== raw.trim()) {
