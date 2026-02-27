@@ -419,7 +419,7 @@ body {
 .multicast-note svg {
   flex-shrink: 0;
   color: var(--primary);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .multicast-note strong {
@@ -446,6 +446,18 @@ body {
 .footer-copy {
   font-size: 11px;
   color: #8a7858;
+}
+
+.footer-disclaimer {
+  font-size: 11px;
+  color: #5a4a38;
+  line-height: 1.7;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .footer-link {
