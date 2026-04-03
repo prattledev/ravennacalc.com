@@ -370,22 +370,30 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-top: 10px;
-  padding: 4px 10px;
-  border: 1.5px solid #b8c85a;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--primary);
   border-radius: var(--radius-xs);
-  background: transparent;
-  color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
   font-family: var(--font);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.14s, color 0.14s;
+  letter-spacing: 0.01em;
+  user-select: none;
+  transition: background 0.14s, border-color 0.14s, box-shadow 0.14s;
 }
 
 .copy-btn:hover {
-  background: #d8e490;
-  color: var(--primary-hover);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 2px 8px rgba(122,140,32,0.35);
+}
+
+.copy-btn.copied {
+  background: #5a6e10;
+  border-color: #5a6e10;
 }
 
 /* Stats 2×2 grid */

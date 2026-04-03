@@ -112,9 +112,14 @@ document.getElementById('copyBtn').addEventListener('click', () => {
   const text   = valEl.textContent.trim();
   if (!text || text === '—') return;
   navigator.clipboard.writeText(text).then(() => {
+    const btn   = document.getElementById('copyBtn');
     const label = document.getElementById('copyBtnLabel');
     label.textContent = 'Copied!';
-    setTimeout(() => { label.textContent = 'Copy'; }, 2000);
+    btn.classList.add('copied');
+    setTimeout(() => {
+      label.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
   });
 });
 
