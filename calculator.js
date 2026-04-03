@@ -1,6 +1,10 @@
 const HEADER_BYTES = 54; // Ethernet(14) + IPv4(20) + UDP(8) + RTP(12)
 
+let forcedUnit = null; // null = auto, 'Mbps', or 'Gbps'
+
 function formatBw(bps) {
+  if (forcedUnit === 'Gbps') return { val: (bps / 1e9).toFixed(3), unit: 'Gbps' };
+  if (forcedUnit === 'Mbps') return { val: (bps / 1e6).toFixed(3), unit: 'Mbps' };
   if (bps >= 1e9) return { val: (bps / 1e9).toFixed(3), unit: 'Gbps' };
   if (bps >= 1e6) return { val: (bps / 1e6).toFixed(3), unit: 'Mbps' };
   if (bps >= 1e3) return { val: (bps / 1e3).toFixed(2), unit: 'Kbps' };
@@ -105,6 +109,21 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 
 document.getElementById('streams').addEventListener('input', calculate);
 document.getElementById('streams').addEventListener('change', calculate);
+
+// Unit toggle
+document.querySelectorAll('.unit-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    if (forcedUnit === this.dataset.unit) {
+      forcedUnit = null;
+      document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+    } else {
+      forcedUnit = this.dataset.unit;
+      document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    }
+    calculate();
+  });
+});
 
 // Copy total bandwidth to clipboard
 document.getElementById('copyBtn').addEventListener('click', () => {
