@@ -106,4 +106,16 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 document.getElementById('streams').addEventListener('input', calculate);
 document.getElementById('streams').addEventListener('change', calculate);
 
+// Copy total bandwidth to clipboard
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const valEl  = document.getElementById('totalBw');
+  const text   = valEl.textContent.trim();
+  if (!text || text === '—') return;
+  navigator.clipboard.writeText(text).then(() => {
+    const label = document.getElementById('copyBtnLabel');
+    label.textContent = 'Copied!';
+    setTimeout(() => { label.textContent = 'Copy'; }, 2000);
+  });
+});
+
 calculate();
