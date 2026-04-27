@@ -553,6 +553,200 @@ body {
 }
 
 /* ============================================================
+   Export CSV
+   ============================================================ */
+.export-row {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.14s, color 0.14s, background 0.14s;
+}
+
+.export-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* ============================================================
+   Stream Groups
+   ============================================================ */
+.stream-groups-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.stream-groups-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.add-group-btn {
+  padding: 5px 12px;
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--primary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+}
+
+.add-group-btn:hover:not(:disabled) {
+  background: var(--primary-light);
+}
+
+.add-group-btn:disabled,
+.add-group-btn--disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  border-color: var(--border);
+  color: var(--text-faint);
+}
+
+.stream-groups-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stream-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #faf8f3;
+  border: 1px solid var(--border-inner);
+  border-radius: var(--radius-sm);
+}
+
+.stream-row-number {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.stream-row-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stream-row .form-input {
+  font-size: 13.5px;
+  padding: 7px 10px;
+}
+
+.stream-row .form-label {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.stream-row .field-hint {
+  font-size: 10px;
+}
+
+.remove-row-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s, background 0.14s;
+}
+
+.remove-row-btn:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+  background: #fdf0ee;
+}
+
+.remove-row-btn--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Breakdown view (multi-group results)
+   ============================================================ */
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.breakdown-item {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.breakdown-grp {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
+.breakdown-detail {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.breakdown-bw {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--text);
+}
+
+.breakdown-bw .bw-val {
+  font-size: 13px;
+}
+
+.breakdown-bw .bw-unit {
+  font-size: 10.5px;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 

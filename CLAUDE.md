@@ -18,12 +18,14 @@ No build tools, package managers, frameworks, or dependencies — everything is 
 
 ## Bandwidth Calculation Formula
 
+Applied per stream group. The combined total is the sum of all groups' `totalBps`.
+
 ```
 samplesPerPacket = round(sampleRate × packetTime)
 payloadBytes     = channels × samplesPerPacket × (bitDepth / 8)
 packetBytes      = payloadBytes + 54          // 54B = Eth(14) + IP(20) + UDP(8) + RTP(12)
 bandwidthBps     = packetBytes × 8 × (1 / packetTime)
-totalBps         = bandwidthBps × streams
+groupBps         = bandwidthBps × streams
 ```
 
 ## Input Constraints
@@ -32,8 +34,17 @@ totalBps         = bandwidthBps × streams
 |---|---|---|
 | Channels | 1 | 256 |
 | Streams | 1 | 10,000 |
+| Stream Groups | 1 | 8 |
 
-Both fields are validated in two places: HTML `min`/`max` attributes and clamping logic inside `calculate()` in `calculator.js`. The `sanitisePositiveInt()` function also enforces these on blur and blocks `.`, `-`, `e` keypresses.
+Channels and streams are validated in two places: HTML `min`/`max` attributes and clamping logic inside `calculate()` in `calculator.js`. The `sanitisePositiveInt()` function also enforces these on `focusout` and blocks `.`, `-`, `e` keypresses.
+
+## Stream Groups
+
+Users can add up to 8 independent stream groups, each with its own Channels and Streams inputs. Sample Rate, Bit Depth, and Packet Time are **global** (shared across all groups). Group rows are created and removed dynamically via `createRow()`, `addRow()`, and `removeRow()` in `calculator.js` — there is no group markup baked into `index.html`. Event listeners on group inputs use **event delegation** on `#streamGroups` (using `focusout` rather than `blur` since `blur` does not bubble).
+
+- When 1 group: results card left block shows "Per Stream" bandwidth
+- When 2+ groups: left block shows a "Breakdown" list (per-group totals); right block shows "Combined Total (N groups)"
+- Packet statistics (packet rate, samples/packet, payload size, packet size) always reflect Group 1
 
 ## Colour Scheme
 
@@ -45,7 +56,11 @@ Derived from the RAVENNA logo. CSS custom properties are defined in `:root` in `
 
 ## Preset Behaviour
 
-Quick preset buttons (2ch, 4ch, 8ch, 16ch, 64ch) always apply these fixed defaults alongside the channel count: 48 kHz, 24-bit, 1 ms packet time, 1 stream. Manually editing any of channels / sample rate / bit depth / packet time deactivates the active preset highlight.
+Quick preset buttons (2ch, 4ch, 8ch, 16ch, 64ch) always apply these fixed defaults alongside the channel count: 48 kHz, 24-bit, 1 ms packet time, 1 stream. Clicking a preset also **removes all extra stream groups**, resetting to a single Group 1. Manually editing channels or any global setting (sample rate, bit depth, packet time) deactivates the active preset highlight. Editing streams does not deactivate the preset.
+
+## CSV Export
+
+The "Export CSV" button in the results card downloads `ravenna-bandwidth.csv` containing the full configuration, per-group bandwidth breakdown, combined total, and packet statistics. The `exportCSV()` function in `calculator.js` re-reads all inputs at export time (it does not cache state).
 
 ## Disclaimer
 
