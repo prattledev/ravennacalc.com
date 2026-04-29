@@ -471,6 +471,50 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Per-group packet stats table (2+ groups) */
+.result-grid--table {
+  display: block;
+}
+
+.stats-table-head,
+.stats-table-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 1fr 1fr 1fr;
+  align-items: baseline;
+  gap: 4px;
+  padding: 8px 12px;
+}
+
+.stats-table-head {
+  border-bottom: 1px solid var(--border-inner);
+  background: var(--surface);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-faint);
+}
+
+.stats-table-row {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface);
+}
+
+.stats-table-row + .stats-table-row {
+  border-top: 1px solid var(--border-inner);
+}
+
+.stats-grp {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
 /* ============================================================
    Multicast Note
    ============================================================ */
@@ -657,11 +701,16 @@ body {
 
 .stream-row-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
 }
 
 .stream-row .form-input {
+  font-size: 13.5px;
+  padding: 7px 10px;
+}
+
+.stream-row .form-select {
   font-size: 13.5px;
   padding: 7px 10px;
 }

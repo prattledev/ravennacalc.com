@@ -69,6 +69,30 @@ function createRow() {
   inputs.appendChild(makeField('Channels', 'row-channels', 2, 1, 256, 'Max 256'));
   inputs.appendChild(makeField('Streams',  'row-streams',  1, 1, 10000, 'Max 10,000'));
 
+  const ptField = document.createElement('div');
+  ptField.className = 'form-field';
+  const ptLabel = document.createElement('label');
+  ptLabel.className = 'form-label';
+  ptLabel.textContent = 'Packet Time';
+  const ptSelect = document.createElement('select');
+  ptSelect.className = 'form-select row-packet-time';
+  [
+    ['0.000125',    '125 µs'],
+    ['0.00025',     '250 µs'],
+    ['0.000333333', '333 µs (⅓ ms)'],
+    ['0.001',       '1 ms'],
+    ['0.004',       '4 ms'],
+  ].forEach(([val, text]) => {
+    const opt = document.createElement('option');
+    opt.value = val;
+    opt.textContent = text;
+    if (val === '0.001') opt.selected = true;
+    ptSelect.appendChild(opt);
+  });
+  ptField.appendChild(ptLabel);
+  ptField.appendChild(ptSelect);
+  inputs.appendChild(ptField);
+
   const removeBtn = document.createElement('button');
   removeBtn.className = 'remove-row-btn remove-row-btn--hidden';
   removeBtn.type = 'button';
@@ -140,27 +164,72 @@ function renderBreakdown(groupResults) {
   });
 }
 
+function renderStats(groupResults) {
+  const grid = document.querySelector('.result-grid');
+  if (groupResults.length === 1) {
+    grid.classList.remove('result-grid--table');
+    const g = groupResults[0];
+    grid.innerHTML =
+      `<div class="result-stat">` +
+        `<div class="result-stat-label">Packet Rate</div>` +
+        `<div class="result-stat-value">${g.pktRate.toLocaleString('en-US')} pkt/s</div>` +
+      `</div>` +
+      `<div class="result-stat">` +
+        `<div class="result-stat-label">Samples / Packet</div>` +
+        `<div class="result-stat-value">${g.samplesPerPkt.toLocaleString('en-US')} per ch</div>` +
+      `</div>` +
+      `<div class="result-stat">` +
+        `<div class="result-stat-label">Audio Payload</div>` +
+        `<div class="result-stat-value">${fmtBytes(g.payloadBytes)}</div>` +
+      `</div>` +
+      `<div class="result-stat">` +
+        `<div class="result-stat-label">Total Packet Size</div>` +
+        `<div class="result-stat-value">${fmtBytes(g.pktBytes)}</div>` +
+      `</div>`;
+  } else {
+    grid.classList.add('result-grid--table');
+    let html =
+      `<div class="stats-table-head">` +
+        `<span></span>` +
+        `<span>Pkt Rate</span>` +
+        `<span>Smpls/Pkt</span>` +
+        `<span>Payload</span>` +
+        `<span>Pkt Size</span>` +
+      `</div>`;
+    groupResults.forEach((g, i) => {
+      html +=
+        `<div class="stats-table-row">` +
+          `<span class="stats-grp">Grp ${i + 1}</span>` +
+          `<span>${g.pktRate.toLocaleString('en-US')} pps</span>` +
+          `<span>${g.samplesPerPkt.toLocaleString('en-US')}</span>` +
+          `<span>${fmtBytes(g.payloadBytes)}</span>` +
+          `<span>${fmtBytes(g.pktBytes)}</span>` +
+        `</div>`;
+    });
+    grid.innerHTML = html;
+  }
+}
+
 function calculate() {
   const sampleRate = parseInt(document.getElementById('sampleRate').value);
   const bitDepth   = parseInt(document.getElementById('bitDepth').value);
-  const packetTime = parseFloat(document.getElementById('packetTime').value);
-
-  const samplesPerPkt = Math.round(sampleRate * packetTime);
-  const pktRate       = 1 / packetTime;
 
   const rows = document.querySelectorAll('.stream-row');
   let totalBps = 0;
   const groupResults = [];
 
   rows.forEach(row => {
-    const channels = Math.min(256,   Math.max(1, parseInt(row.querySelector('.row-channels').value) || 1));
-    const streams  = Math.min(10000, Math.max(1, parseInt(row.querySelector('.row-streams').value)  || 1));
-    const payloadBytes = channels * samplesPerPkt * (bitDepth / 8);
-    const pktBytes     = payloadBytes + HEADER_BYTES;
-    const bps          = pktBytes * 8 * pktRate;
-    const groupBps     = bps * streams;
+    const channels    = Math.min(256,   Math.max(1, parseInt(row.querySelector('.row-channels').value) || 1));
+    const streams     = Math.min(10000, Math.max(1, parseInt(row.querySelector('.row-streams').value)  || 1));
+    const packetTime  = parseFloat(row.querySelector('.row-packet-time').value);
+    const samplesPerPkt = Math.round(sampleRate * packetTime);
+    const pktRate       = 1 / packetTime;
+    const payloadBytes  = channels * samplesPerPkt * (bitDepth / 8);
+    const pktBytes      = payloadBytes + HEADER_BYTES;
+    const bps           = pktBytes * 8 * pktRate;
+    const groupBps      = bps * streams;
     totalBps += groupBps;
-    groupResults.push({ channels, streams, bps, groupBps, payloadBytes, pktBytes });
+    groupResults.push({ channels, streams, bps, groupBps, payloadBytes, pktBytes, packetTime, samplesPerPkt, pktRate });
   });
 
   const perStreamView = document.getElementById('perStreamView');
@@ -188,11 +257,7 @@ function calculate() {
     document.getElementById('totalLabel').textContent = `Total (${rows.length} groups)`;
   }
 
-  // Stats grid — packet rate and samples/pkt are global; payload/packet size from Group 1
-  document.getElementById('packetRate').textContent    = pktRate.toLocaleString('en-US') + ' pkt/s';
-  document.getElementById('samplesPerPkt').textContent = samplesPerPkt.toLocaleString('en-US') + ' per ch';
-  document.getElementById('payloadSize').textContent   = fmtBytes(groupResults[0].payloadBytes);
-  document.getElementById('packetSize').textContent    = fmtBytes(groupResults[0].pktBytes);
+  renderStats(groupResults);
 }
 
 // Sanitise positive-integer fields
@@ -219,7 +284,10 @@ streamGroupsEl.addEventListener('input', e => {
 });
 
 streamGroupsEl.addEventListener('change', e => {
-  if (e.target.matches('.row-channels, .row-streams')) calculate();
+  if (e.target.matches('.row-packet-time')) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  }
+  if (e.target.matches('.row-channels, .row-streams, .row-packet-time')) calculate();
 });
 
 streamGroupsEl.addEventListener('focusout', e => {
@@ -255,7 +323,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 
     document.getElementById('sampleRate').value = '48000';
     document.getElementById('bitDepth').value   = '24';
-    document.getElementById('packetTime').value = '0.001';
+    firstRow.querySelector('.row-packet-time').value = '0.001';
 
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
@@ -268,7 +336,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
 
 // ── Deactivate presets on global config change ────────────────────────────────
 
-['sampleRate', 'bitDepth', 'packetTime'].forEach(id => {
+['sampleRate', 'bitDepth'].forEach(id => {
   ['input', 'change'].forEach(evt => {
     document.getElementById(id).addEventListener(evt, () => {
       document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
@@ -316,32 +384,49 @@ document.getElementById('copyBtn').addEventListener('click', () => {
 function exportCSV() {
   const sampleRate = parseInt(document.getElementById('sampleRate').value);
   const bitDepth   = parseInt(document.getElementById('bitDepth').value);
-  const packetTime = parseFloat(document.getElementById('packetTime').value);
 
-  const packetTimeLabel = document.getElementById('packetTime').options[document.getElementById('packetTime').selectedIndex].text;
   const sampleRateLabel = document.getElementById('sampleRate').options[document.getElementById('sampleRate').selectedIndex].text;
   const bitDepthLabel   = document.getElementById('bitDepth').options[document.getElementById('bitDepth').selectedIndex].text;
-
-  const samplesPerPkt = Math.round(sampleRate * packetTime);
-  const pktRate       = 1 / packetTime;
 
   const rows = document.querySelectorAll('.stream-row');
   let totalBps = 0;
   const groupResults = [];
 
   rows.forEach(row => {
-    const channels = Math.min(256,   Math.max(1, parseInt(row.querySelector('.row-channels').value) || 1));
-    const streams  = Math.min(10000, Math.max(1, parseInt(row.querySelector('.row-streams').value)  || 1));
-    const payloadBytes = channels * samplesPerPkt * (bitDepth / 8);
-    const pktBytes     = payloadBytes + HEADER_BYTES;
-    const bps          = pktBytes * 8 * pktRate;
-    const groupBps     = bps * streams;
+    const channels       = Math.min(256,   Math.max(1, parseInt(row.querySelector('.row-channels').value) || 1));
+    const streams        = Math.min(10000, Math.max(1, parseInt(row.querySelector('.row-streams').value)  || 1));
+    const ptSelect       = row.querySelector('.row-packet-time');
+    const packetTime     = parseFloat(ptSelect.value);
+    const packetTimeLabel = ptSelect.options[ptSelect.selectedIndex].text;
+    const samplesPerPkt  = Math.round(sampleRate * packetTime);
+    const pktRate        = 1 / packetTime;
+    const payloadBytes   = channels * samplesPerPkt * (bitDepth / 8);
+    const pktBytes       = payloadBytes + HEADER_BYTES;
+    const bps            = pktBytes * 8 * pktRate;
+    const groupBps       = bps * streams;
     totalBps += groupBps;
-    groupResults.push({ channels, streams, bps, groupBps, payloadBytes, pktBytes });
+    groupResults.push({ channels, streams, bps, groupBps, payloadBytes, pktBytes, packetTime, packetTimeLabel, samplesPerPkt, pktRate });
   });
 
   const f = v => formatBw(v);
   const bwStr = bps => { const r = f(bps); return `${r.val} ${r.unit}`; };
+
+  const statsLines = groupResults.length === 1
+    ? [
+        ['Packet Statistics'],
+        ['Packet Rate', groupResults[0].pktRate.toLocaleString('en-US') + ' pkt/s'],
+        ['Samples per Packet', groupResults[0].samplesPerPkt.toLocaleString('en-US') + ' per channel'],
+        ['Audio Payload', fmtBytes(groupResults[0].payloadBytes)],
+        ['Total Packet Size', fmtBytes(groupResults[0].pktBytes)],
+      ]
+    : groupResults.flatMap((g, i) => [
+        [`Packet Statistics (Group ${i + 1})`],
+        ['Packet Rate', g.pktRate.toLocaleString('en-US') + ' pkt/s'],
+        ['Samples per Packet', g.samplesPerPkt.toLocaleString('en-US') + ' per channel'],
+        ['Audio Payload', fmtBytes(g.payloadBytes)],
+        ['Total Packet Size', fmtBytes(g.pktBytes)],
+        [],
+      ]);
 
   const lines = [
     ['RAVENNA / AES67 / ST 2110-30 Bandwidth Calculation'],
@@ -349,26 +434,22 @@ function exportCSV() {
     ['Configuration'],
     ['Sample Rate', sampleRateLabel],
     ['Bit Depth', bitDepthLabel],
-    ['Packet Time', packetTimeLabel],
     ['Header Overhead', '54 B (14B Eth + 20B IP + 8B UDP + 12B RTP)'],
     [],
     ['Stream Groups'],
-    ['Group', 'Channels', 'Streams', 'Per Stream', 'Group Total'],
+    ['Group', 'Channels', 'Streams', 'Packet Time', 'Per Stream', 'Group Total'],
     ...groupResults.map((g, i) => [
       `Group ${i + 1}`,
       g.channels,
       g.streams,
+      g.packetTimeLabel,
       bwStr(g.bps),
       bwStr(g.groupBps),
     ]),
     [],
-    ['Combined Total', '', '', '', bwStr(totalBps)],
+    ['Combined Total', '', '', '', '', bwStr(totalBps)],
     [],
-    ['Packet Statistics (Group 1)'],
-    ['Packet Rate', pktRate.toLocaleString('en-US') + ' pkt/s'],
-    ['Samples per Packet', samplesPerPkt.toLocaleString('en-US') + ' per channel'],
-    ['Audio Payload', fmtBytes(groupResults[0].payloadBytes)],
-    ['Total Packet Size', fmtBytes(groupResults[0].pktBytes)],
+    ...statsLines,
   ];
 
   const csv = lines.map(row => row.map(cell => {
