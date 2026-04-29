@@ -6,8 +6,10 @@ A static, single-page bandwidth calculator for RAVENNA / AES67 / SMPTE ST 2110-3
 
 - Calculate network bandwidth for RAVENNA / AES67 / SMPTE ST 2110-30 audio streams
 - Quick presets for common ST 2110-30 channel configurations (2, 4, 8, 16, 64 channels)
-- Configurable sample rate (44.1–192 kHz), bit depth (16/24/32-bit), and packet time (125 µs–4 ms)
-- Per-stream and total bandwidth results with packet rate, samples per packet, and payload size breakdown
+- Configurable sample rate (44.1–192 kHz) and bit depth (16/24/32-bit) shared across all groups
+- Up to 8 independent stream groups, each with its own channels, streams, and packet time (125 µs–4 ms)
+- Per-stream and combined total bandwidth results; per-group packet stats breakdown when using multiple groups
+- CSV export of full configuration, per-group results, and packet statistics
 - Multicast bandwidth explanation for professional media network design
 
 ## Formula
