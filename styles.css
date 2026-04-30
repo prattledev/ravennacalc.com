@@ -96,18 +96,18 @@ body {
    Intro
    ============================================================ */
 .intro {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text);
   font-weight: 400;
-  line-height: 1.8;
-  margin-bottom: 28px;
+  line-height: 1.65;
+  margin-bottom: 20px;
 }
 
 /* ============================================================
    Quick Presets
    ============================================================ */
 .presets-section {
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .presets-header {
@@ -198,6 +198,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
+  min-height: 36px;
   margin-bottom: 22px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-inner);
@@ -277,17 +278,19 @@ body {
 /* Config note */
 .config-note {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
   margin-top: 6px;
-  padding: 9px 12px;
+  padding: 7px 10px;
   background: #f5f0e4;
   border: 1px solid var(--border-inner);
   border-radius: var(--radius-xs);
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--text-faint);
   font-family: 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .config-note svg {
@@ -684,7 +687,7 @@ body {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   background: #faf8f3;
   border: 1px solid var(--border-inner);
   border-radius: var(--radius-sm);
@@ -718,10 +721,6 @@ body {
 .stream-row .form-label {
   font-size: 11px;
   margin-bottom: 4px;
-}
-
-.stream-row .field-hint {
-  font-size: 10px;
 }
 
 .remove-row-btn {

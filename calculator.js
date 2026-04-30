@@ -44,7 +44,7 @@ function createRow() {
   const inputs = document.createElement('div');
   inputs.className = 'stream-row-inputs';
 
-  function makeField(labelText, cls, defaultVal, min, max, hint) {
+  function makeField(labelText, cls, defaultVal, min, max) {
     const field = document.createElement('div');
     field.className = 'form-field';
     const lbl = document.createElement('label');
@@ -57,17 +57,13 @@ function createRow() {
     inp.min   = min;
     inp.max   = max;
     inp.step  = '1';
-    const h = document.createElement('span');
-    h.className = 'field-hint';
-    h.textContent = hint;
     field.appendChild(lbl);
     field.appendChild(inp);
-    field.appendChild(h);
     return field;
   }
 
-  inputs.appendChild(makeField('Channels', 'row-channels', 2, 1, 256, 'Max 256'));
-  inputs.appendChild(makeField('Streams',  'row-streams',  1, 1, 10000, 'Max 10,000'));
+  inputs.appendChild(makeField('Channels', 'row-channels', 2, 1, 256));
+  inputs.appendChild(makeField('Streams',  'row-streams',  1, 1, 10000));
 
   const ptField = document.createElement('div');
   ptField.className = 'form-field';
