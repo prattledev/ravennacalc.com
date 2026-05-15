@@ -32,6 +32,6 @@ styles.css      — all styles
 calculator.js   — all JavaScript
 ```
 
-## Disclaimer
+## License
 
-ravennacalc.com is an independent entity and is not affiliated, associated, authorized, endorsed by, or in any way officially connected with LAWO AG or any of its subsidiaries or affiliates. The name RAVENNA, as well as related names, marks, emblems, and images, are registered trademarks of their respective owners.
+© 2026 ravennacalc.com

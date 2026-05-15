@@ -65,4 +65,4 @@ The "Export CSV" button in the results card downloads `ravenna-bandwidth.csv` co
 
 ## Disclaimer
 
-The footer contains a legal disclaimer that ravennacalc.com is independent and unaffiliated with LAWO AG. Do not remove or substantially alter this text.
+The footer may contain a legal disclaimer that ravennacalc.com is independent and unaffiliated with LAWO AG. This text may be removed or altered as needed.
